@@ -1,0 +1,6 @@
+import {
+  "0607272/moon-loglens" @loglens,
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")

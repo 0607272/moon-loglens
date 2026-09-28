@@ -1,0 +1,50 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "0607272/moon-loglens"
+
+// Values
+pub fn analyze_jsonl(String, Filter, String) -> Result[Summary, LogError]
+
+pub fn analyze_lines(Iter[String], Filter, String) -> Result[Summary, LogError]
+
+pub fn boolean(Bool) -> Scalar
+
+pub fn make_filter(String, Scalar) -> Filter
+
+pub fn numeric(Double) -> Scalar
+
+pub fn parse_scalar(String) -> Result[Scalar, LogError]
+
+pub fn text(String) -> Scalar
+
+// Errors
+
+// Types and methods
+pub struct Filter {
+  path : String
+  value : Scalar
+}
+pub fn Filter::new(String, Scalar) -> Self
+
+pub struct LogError {
+  line : Int
+  message : String
+}
+
+pub enum Scalar {
+  Text(String)
+  Boolean(Bool)
+  Numeric(Double)
+}
+
+pub struct Summary {
+  matched : Int
+  count : Int
+  sum : Double
+  min : Double?
+  max : Double?
+  average : Double?
+}
+
+// Type aliases
+
+// Traits
