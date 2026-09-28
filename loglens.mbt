@@ -47,9 +47,28 @@ pub struct Summary {
 }
 
 ///|
+pub fn Summary::has_matches(self : Summary) -> Bool {
+  self.matched > 0
+}
+
+///|
+pub fn Summary::has_numeric_values(self : Summary) -> Bool {
+  self.count > 0
+}
+
+///|
 pub struct LogError {
   line : Int
   message : String
+}
+
+///|
+pub fn LogError::to_string(self : LogError) -> String {
+  if self.line > 0 {
+    "line " + self.line.to_string() + ": " + self.message
+  } else {
+    self.message
+  }
 }
 
 ///|

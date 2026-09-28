@@ -11,6 +11,8 @@ test "summarizes only matching events" {
   assert_eq(result.min, Some(2.0))
   assert_eq(result.max, Some(4.0))
   assert_eq(result.average, Some(3.0))
+  assert_true(result.has_matches())
+  assert_true(result.has_numeric_values())
 }
 
 ///|
@@ -26,6 +28,8 @@ test "empty input has explicit empty statistics" {
   assert_eq(result.min, None)
   assert_eq(result.max, None)
   assert_eq(result.average, None)
+  assert_true(!result.has_matches())
+  assert_true(!result.has_numeric_values())
 }
 
 ///|
@@ -107,6 +111,19 @@ test "invalid paths and scalar values fail before reading input" {
   assert_true(@moon-loglens.parse_scalar("null") is Err(_))
   assert_true(@moon-loglens.parse_scalar("[]") is Err(_))
   assert_true(@moon-loglens.parse_scalar("\"broken") is Err(_))
+}
+
+///|
+test "errors have stable user-facing text" {
+  let filter = @moon-loglens.make_filter("level", @moon-loglens.text("error"))
+  let problem = @moon-loglens.analyze_jsonl("bad", filter, "value").unwrap_err()
+  assert_eq(problem.to_string(), "line 1: invalid JSON")
+  let global = @moon-loglens.analyze_jsonl(
+    "",
+    @moon-loglens.make_filter("a..b", @moon-loglens.text("x")),
+    "v",
+  ).unwrap_err()
+  assert_eq(global.to_string(), "field path contains an empty component")
 }
 
 ///|
