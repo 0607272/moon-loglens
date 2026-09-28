@@ -127,6 +127,18 @@ test "errors have stable user-facing text" {
 }
 
 ///|
+test "supports unicode text and exponent numbers" {
+  let input = "{\"service\":\"搜索\",\"size\":1.5e1}\n{\"service\":\"skip\",\"size\":2}\n"
+  let result = @moon-loglens.analyze_jsonl(
+    input,
+    @moon-loglens.make_filter("service", @moon-loglens.text("搜索")),
+    "size",
+  ).unwrap()
+  assert_eq(result.count, 1)
+  assert_eq(result.sum, 15.0)
+}
+
+///|
 test "iterator and text APIs agree" {
   let input = "{\"level\":\"error\",\"value\":7}\n\n{\"level\":\"error\",\"value\":3}"
   let filter : @moon-loglens.Filter = @moon-loglens.make_filter(
