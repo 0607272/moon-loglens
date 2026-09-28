@@ -139,6 +139,16 @@ test "supports unicode text and exponent numbers" {
 }
 
 ///|
+test "counts CRLF blank lines in reported locations" {
+  let filter = @moon-loglens.make_filter("level", @moon-loglens.text("error"))
+  let problem = @moon-loglens.analyze_jsonl(
+    "\r\n{\"level\":\"error\"}\r\nnope", filter, "value",
+  ).unwrap_err()
+  assert_eq(problem.line, 3)
+  assert_eq(problem.to_string(), "line 3: invalid JSON")
+}
+
+///|
 test "iterator and text APIs agree" {
   let input = "{\"level\":\"error\",\"value\":7}\n\n{\"level\":\"error\",\"value\":3}"
   let filter : @moon-loglens.Filter = @moon-loglens.make_filter(
