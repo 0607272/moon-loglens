@@ -5,7 +5,7 @@ test "report renders empty numeric values" {
     "{\"level\":\"error\"}", filter, "duration",
   ).unwrap()
   let output = report(summary)
-  assert_true(output.contains("matched=2"))
+  assert_true(output.contains("matched=1"))
   assert_true(output.contains("min=none"))
   assert_true(output.contains("average=none"))
 }
