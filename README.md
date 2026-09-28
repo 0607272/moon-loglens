@@ -23,6 +23,10 @@ The output contains `matched`, numeric `count`, `sum`, `min`, `max`, and
 Get-Content examples/basic/events.jsonl | moon run --target js cmd/main -- stats - level error duration_ms
 ```
 
+Use `--help` for the command synopsis and `--version` to print the module
+version. The CLI returns exit code 2 for usage or filter syntax errors and exit
+code 1 for file, JSON, or analysis errors.
+
 Filter values are plain strings by default. JSON booleans, numbers, and quoted
 strings keep their types, so `true`, `-2.5`, and `"error"` are distinct values.
 Field paths use dot-separated object keys, such as `request.status`.

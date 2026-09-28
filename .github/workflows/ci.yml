@@ -16,6 +16,10 @@ jobs:
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
       - name: Check formatting
         run: moon fmt --check
+      - name: Check toolchain
+        run: |
+          moon version --all
+          moon info --target js
       - name: Check
         run: moon check --target js --deny-warn
       - name: Build
