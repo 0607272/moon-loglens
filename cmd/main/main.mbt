@@ -44,7 +44,25 @@ fn command_index(args : Array[String]) -> Int {
 }
 
 ///|
+fn has_argument(args : Array[String], wanted : String) -> Bool {
+  for argument in args {
+    if argument == wanted {
+      return true
+    }
+  }
+  false
+}
+
+///|
 fn run(args : Array[String]) -> Unit {
+  if has_argument(args, "--version") {
+    println("moon-loglens 0.1.0")
+    return
+  }
+  if has_argument(args, "--help") || has_argument(args, "help") {
+    println(usage())
+    return
+  }
   let start = command_index(args)
   if start < 0 {
     fail(2, usage())
