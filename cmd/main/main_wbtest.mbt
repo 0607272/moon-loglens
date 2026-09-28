@@ -1,13 +1,9 @@
 ///|
 test "report renders empty numeric values" {
-  let summary : @loglens.Summary = {
-    matched: 2,
-    count: 0,
-    sum: 0.0,
-    min: None,
-    max: None,
-    average: None,
-  }
+  let filter = @loglens.make_filter("level", @loglens.text("error"))
+  let summary = @loglens.analyze_jsonl(
+    "{\"level\":\"error\"}", filter, "duration",
+  ).unwrap()
   let output = report(summary)
   assert_true(output.contains("matched=2"))
   assert_true(output.contains("min=none"))
