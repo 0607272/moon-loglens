@@ -29,6 +29,7 @@ pub struct LogError {
   line : Int
   message : String
 }
+pub fn LogError::to_string(Self) -> String
 
 pub enum Scalar {
   Text(String)
@@ -44,6 +45,8 @@ pub struct Summary {
   max : Double?
   average : Double?
 }
+pub fn Summary::has_matches(Self) -> Bool
+pub fn Summary::has_numeric_values(Self) -> Bool
 
 // Type aliases
 
