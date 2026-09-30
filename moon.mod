@@ -8,6 +8,6 @@ license = "MIT"
 
 preferred_target = "js"
 
-description = "Streaming JSONL equality filters and numeric summaries in MoonBit"
+description = "A MoonBit JSONL toolkit for filtering, field profiling, and grouped numeric analytics"
 
-keywords = [ "jsonl", "logs", "statistics" ]
+keywords = [ "jsonl", "logs", "profiling", "grouping", "statistics" ]

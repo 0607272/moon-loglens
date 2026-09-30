@@ -24,6 +24,12 @@ The output contains `matched`, numeric `count`, `sum`, `min`, `max`, and
 Get-Content examples/basic/events.jsonl | moon run --target js cmd/main -- stats - level error duration_ms
 ```
 
+On macOS or Linux, use the equivalent pipeline:
+
+```text
+cat examples/basic/events.jsonl | moon run --target js cmd/main -- stats - level error duration_ms
+```
+
 Use `--help` for the command synopsis and `--version` to print the module
 version. The CLI returns exit code 2 for usage or filter syntax errors and exit
 code 1 for file, JSON, or analysis errors.
@@ -83,6 +89,9 @@ moon test --target js --deny-warn
 The project uses only the MoonBit core JSON package. The example data is
 synthetic and contains no personal or production log data. The project is an
 independent implementation and does not copy a third-party source tree.
+
+The library packages are target-independent; the file-reading CLI uses Node.js
+FFI and is intentionally checked, built, and run with the JavaScript target.
 
 ## Scope
 
