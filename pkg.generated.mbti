@@ -8,22 +8,65 @@ pub fn analyze_lines(Iter[String], Filter, String) -> Result[Summary, LogError]
 
 pub fn boolean(Bool) -> Scalar
 
+pub fn group_jsonl(String, String, String) -> Result[Array[GroupSummary], LogError]
+
+pub fn group_lines(Iter[String], String, String) -> Result[Array[GroupSummary], LogError]
+
 pub fn make_filter(String, Scalar) -> Filter
 
 pub fn numeric(Double) -> Scalar
 
 pub fn parse_scalar(String) -> Result[Scalar, LogError]
 
+pub fn profile_jsonl(String, Array[String]) -> Result[Array[FieldProfile], LogError]
+
+pub fn profile_lines(Iter[String], Array[String]) -> Result[Array[FieldProfile], LogError]
+
 pub fn text(String) -> Scalar
 
 // Errors
 
 // Types and methods
+pub enum FieldKind {
+  Missing
+  Null
+  Text
+  Boolean
+  Numeric
+  Object
+  Array
+}
+
+pub struct FieldProfile {
+  path : String
+  records : Int
+  missing : Int
+  nulls : Int
+  texts : Int
+  booleans : Int
+  numerics : Int
+  objects : Int
+  arrays : Int
+}
+pub fn FieldProfile::kind_count(Self, FieldKind) -> Int
+pub fn FieldProfile::present(Self) -> Int
+
 pub struct Filter {
   path : String
   value : Scalar
 }
 pub fn Filter::new(String, Scalar) -> Self
+
+pub struct GroupSummary {
+  key : Scalar
+  matched : Int
+  count : Int
+  sum : Double
+  min : Double?
+  max : Double?
+  average : Double?
+}
+pub fn GroupSummary::key_text(Self) -> String
 
 pub struct LogError {
   line : Int

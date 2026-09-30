@@ -183,3 +183,46 @@ test "nonfinite numbers and sum overflow are errors" {
   )
   assert_true(@moon-loglens.parse_scalar("1e999") is Err(_))
 }
+
+///|
+test "profiles field presence and JSON kinds" {
+  let profiles = @moon-loglens.profile_jsonl(
+    "{\"level\":\"error\",\"meta\":{}}\n{\"level\":true,\"meta\":null}\n{\"value\":3,\"meta\":[]}\n",
+    ["level", "meta", "value"],
+  ).unwrap()
+  assert_eq(profiles[0].records, 3)
+  assert_eq(profiles[0].missing, 1)
+  assert_eq(profiles[0].texts, 1)
+  assert_eq(profiles[0].booleans, 1)
+  assert_eq(profiles[1].objects, 1)
+  assert_eq(profiles[1].nulls, 1)
+  assert_eq(profiles[1].arrays, 1)
+  assert_eq(profiles[2].numerics, 1)
+  assert_eq(profiles[2].present(), 1)
+}
+
+///|
+test "group aggregation keeps scalar keys separate" {
+  let groups = @moon-loglens.group_jsonl(
+    "{\"service\":\"api\",\"latency\":10}\n{\"service\":\"web\",\"latency\":5}\n{\"service\":\"api\",\"latency\":30}\n{\"service\":true,\"latency\":2}\n",
+    "service", "latency",
+  ).unwrap()
+  assert_eq(groups.length(), 3)
+  assert_eq(groups[0].key_text(), "api")
+  assert_eq(groups[0].matched, 2)
+  assert_eq(groups[0].sum, 40.0)
+  assert_eq(groups[0].average, Some(20.0))
+  assert_eq(groups[1].key_text(), "web")
+  assert_eq(groups[2].key_text(), "true")
+}
+
+///|
+test "profile and group report physical line errors" {
+  assert_true(
+    @moon-loglens.profile_jsonl("{}\nbad", ["level"]) is Err({ line: 2, .. }),
+  )
+  assert_true(
+    @moon-loglens.group_jsonl("{\"service\":{}}", "service", "latency")
+    is Err({ line: 1, .. }),
+  )
+}
